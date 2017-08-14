@@ -1,0 +1,10 @@
+[2017-04-24 16:06:53] [mns_python_sdk] [INFO] [mns_http.py:54] [6668] InitMNSHttp KeepAlive:True ConnectionTime:60
+[2017-04-24 16:06:53] [mns_python_sdk] [INFO] [mns_client.py:39] [6668] InitClient Host:http://1017843073416253.mns.cn-hangzhou.aliyuncs.com Version:2015-06-06
+[2017-04-24 16:07:37] [mns_python_sdk] [INFO] [mns_http.py:54] [6760] InitMNSHttp KeepAlive:True ConnectionTime:60
+[2017-04-24 16:07:37] [mns_python_sdk] [INFO] [mns_client.py:39] [6760] InitClient Host:http://1017843073416253.mns.cn-hangzhou.aliyuncs.com Version:2015-06-06
+[2017-04-24 17:07:07] [mns_python_sdk] [INFO] [mns_http.py:54] [9112] InitMNSHttp KeepAlive:True ConnectionTime:60
+[2017-04-24 17:07:07] [mns_python_sdk] [INFO] [mns_client.py:39] [9112] InitClient Host:http://1017843073416253.mns.cn-hangzhou.aliyuncs.com Version:2015-06-06
+[2017-04-24 17:15:55] [mns_python_sdk] [INFO] [mns_http.py:54] [1148] InitMNSHttp KeepAlive:True ConnectionTime:60
+[2017-04-24 17:15:55] [mns_python_sdk] [INFO] [mns_client.py:39] [1148] InitClient Host:http://1017843073416253.mns.cn-hangzhou.aliyuncs.com Version:2015-06-06
+[2017-04-25 09:53:02] [mns_python_sdk] [INFO] [mns_http.py:54] [7436] InitMNSHttp KeepAlive:True ConnectionTime:60
+[2017-04-25 09:53:02] [mns_python_sdk] [INFO] [mns_client.py:39] [7436] InitClient Host:http://1017843073416253.mns.cn-hangzhou.aliyuncs.com Version:2015-06-06

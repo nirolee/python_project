@@ -1,0 +1,7 @@
+# Created by .ignore support plugin (hsz.mobi)
+.idea
+clip_spider.log
+log/
+cache
+clipSpider/spiders/*.pyc
+service/*.pyc

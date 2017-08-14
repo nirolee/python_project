@@ -1,0 +1,10 @@
+pip install scrapy
+pip install youtube_dl
+pip install PyExecJS
+pip install oss2
+pip install MySQL-python
+pip install requests
+pip3 install you-get
+#pip install pycurl
+pip install rsa
+pip install bs4

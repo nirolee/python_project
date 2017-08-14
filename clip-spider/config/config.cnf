@@ -1,0 +1,66 @@
+{
+    "mail_receive":{
+        "ql" : "ql@easub.com",
+        "ywf" : "yaowenfeng@staff.easub.com"
+    },
+    "mail_send0":{
+        "mail_host" : "smtp.126.com",
+        "mail_user" : "liyuzai@126.com",
+        "mail_pass" : ".0123456",
+        "mail_postfix" : "126.com"
+    },
+    "mail_send1":{
+        "mail_host" : "smtp.163.com",
+        "mail_user" : "13710039964@163.com",
+        "mail_pass" : "1q2w3e4r5tywf",
+        "mail_postfix" : "163.com"
+    },
+    "mail_send2":{
+        "mail_host" : "smtp.126.com",
+        "mail_user" : "easub123@126.com",
+        "mail_pass" : "1q2w3e4r5tywf",
+        "mail_postfix" : "126.com"
+    },
+    "database": {
+        "host": "rdskkva21dbr8505jd19o.mysql.rds.aliyuncs.com",
+        "user": "viki",
+        "passwd": "99MKLd3h9i",
+        "db": "viki_data",
+        "charset": "utf8"
+    },
+    "rumble": {
+        "base_url": "https://rumble.com/api/v0/Media.Search.%s?_p=lvR1aN9o.05x36lobc",
+        "channels": "https://rumble.com/api/v0/Media.Channels.json?_p=lvR1aN9o.05x36lobc",
+        "video_info": "https://rumble.com/api/v0/Media.Item?_p=lvR1aN9o.05x36lobc&fid=%s",
+        "easub_user_id": "1838",
+        "library_id": "4402670a-028e-4430-8e02-7a92483ccef9"
+    },
+    "barcroft": {
+        "rss": "http://barcroftmrss.mainstreamdata.com/mrss/RSSFeed.ashx?customerid=BAR-EASUB-9LN23FYV90",
+        "easub_user_id": "1850",
+        "library_id": "bf6a9f9a-6e0d-4dc1-8c3d-553bba670d8b",
+        "download": "0"
+    },
+    "easub": {
+        "provider_video_build": "http://clip.easub.com/api/v1/provider/videos/build",
+        "create_upload_url": "http://clip.easub.com/api/v1/crawler/create_upload_url?user_id=%s",
+        "miaopai_share_timer": "http://clip.easub.com/api/v1/miaopai/share/timer",
+        "check_video_url": "http://clip2.easub.com/api/v1/video/checkplayurl",
+        "aliyun_accessid": "K76GW5Qo242EwdZL",
+        "aliyun_accesskey": "Z0Fq1sPFnJqConp7arOtVnHVStnwV5",
+        "oss_vod_bucket": "cloud-clip-out",
+        "oss_vod_object": "vod-out/hd/",
+        "vod_endpoint": "oss-cn-hangzhou.aliyuncs.com",
+        "video_host": "video.clip.easub.com",
+        "check_library_video": "http://clip2.easub.com/api/v1/video/checkvideoinlib?library_id=%s&user_id=%s&play_id=%s",
+        "check_user_video": "http://clip2.easub.com/api/v1/video/checkvideoinlib?user_id=%s&play_id=%s",
+        "legitimate_create_upload_url": "http://clip2.easub.com/api/v2/legitimate/create_upload_url?user_id=%s&bucket=%s",
+        "legitimate_video": "http://clip2.easub.com/api/v2/legitimate/video",
+        "copyright_video_bucket": "copyright-videos"
+    },
+    "ffmpeg": "/opt/ffmpeg/bin/ffmpeg",
+    "elastic_hosts": {
+        "host": "121.43.39.138",
+        "port": 19222
+    }
+}

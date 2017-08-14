@@ -1,0 +1,9 @@
+{
+    "database": {
+        "host": "rdskkva21dbr8505jd19o.mysql.rds.aliyuncs.com",
+        "user": "viki",
+        "passwd": "99MKLd3h9i",
+        "db": "viki_data",
+        "charset": "utf8"
+    }
+}
