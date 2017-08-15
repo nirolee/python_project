@@ -88,4 +88,5 @@ ROBOTSTXT_OBEY = False
 #HTTPCACHE_DIR = 'httpcache'
 #HTTPCACHE_IGNORE_HTTP_CODES = []
 #HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
+HTTPCACHE_IGNORE_HTTP_CODES = [301,302]
 FEED_EXPORT_ENCODING = 'UTF-8'
