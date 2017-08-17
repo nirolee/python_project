@@ -66,7 +66,8 @@ ROBOTSTXT_OBEY = False
 # See http://scrapy.readthedocs.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
    'ArticleSpider.pipelines.ArticlespiderPipeline': 300,
-   'scrapy.pipelines.images.ImagesPipeline': 1, #数字越小代表越先处理
+   # 'scrapy.pipelines.images.ImagesPipeline': 1, #数字越小代表越先处理
+   'ArticleSpider.pipelines.ArticleImagePipeline': 1,
 }
 IMAGES_URLS_FIELD = "front_img_url"
 project_dir = os.path.abspath(os.path.dirname(__file__))

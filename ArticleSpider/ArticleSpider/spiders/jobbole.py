@@ -28,7 +28,7 @@ class JobboleSpider(scrapy.Spider):
         # time = response.xpath("//p[@class='entry-meta-hide-on-mobile']/text()").extract()[0].strip().replace("·","")
         # praise_nums = response.xpath("//span[contains(@class,'vote-post-up')]/h10/text()").extract()[0]
         title = response.css(".entry-header h1::text").extract()[0]
-        front_img_url = response.meta.get("front_img_url","")
+        front_img_url = response.meta.get("front_img_url", "")
         url = response.url
         time = response.css(".entry-meta-hide-on-mobile::text").extract()[0].strip().replace("·", "")
         praise_nums = response.css(".vote-post-up h10::text").extract_first("0")
