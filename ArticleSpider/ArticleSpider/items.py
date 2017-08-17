@@ -12,3 +12,12 @@ class ArticlespiderItem(scrapy.Item):
     # define the fields for your item here like:
     # name = scrapy.Field()
     pass
+class JobBoleArticleItem(scrapy.Item):
+    title = scrapy.Field()
+    front_img_url = scrapy.Field()
+    url = scrapy.Field()
+    time = scrapy.Field()
+    praise_nums = scrapy.Field()
+    fav_nums = scrapy.Field()
+    content = scrapy.Field()
+    pass
