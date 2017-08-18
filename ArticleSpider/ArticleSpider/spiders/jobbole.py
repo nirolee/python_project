@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import scrapy
 import re
+import datetime
 from scrapy.http import Request
 from urllib import parse
 from ArticleSpider.items import JobBoleArticleItem
@@ -30,7 +31,7 @@ class JobboleSpider(scrapy.Spider):
         title = response.css(".entry-header h1::text").extract()[0]
         front_img_url = response.meta.get("front_img_url", "")
         url = response.url
-        time = response.css(".entry-meta-hide-on-mobile::text").extract()[0].strip().replace("·", "")
+        create_time = response.css(".entry-meta-hide-on-mobile::text").extract()[0].strip().replace("·", "")
         praise_nums = response.css(".vote-post-up h10::text").extract_first("0")
         fav_nums = response.css(".bookmark-btn::text").extract_first("0")
         match_nums = re.match(".*(\d+).*", fav_nums)
@@ -45,7 +46,11 @@ class JobboleSpider(scrapy.Spider):
         article_item["front_img_url"] = [front_img_url]
         article_item["praise_nums"] = praise_nums
         article_item["fav_nums"] = fav_nums
-        article_item["time"] = time
+        try:
+            create_time = datetime.datetime.strftime(create_time, "%Y%m%d").date()
+        except Exception as e:
+            create_time = datetime.datetime.now().date()
+        article_item["create_time"] = create_time
         article_item["url"] = url
         article_item["content"] = content
         yield article_item
