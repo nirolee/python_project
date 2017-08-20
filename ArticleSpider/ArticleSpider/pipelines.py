@@ -8,9 +8,10 @@
 import codecs
 import json
 import MySQLdb
+import MySQLdb.cursors
 from scrapy.exporters import JsonItemExporter
 from scrapy.pipelines.images import ImagesPipeline
-
+from twisted.enterprise import adbapi
 class ArticlespiderPipeline(object):
     def process_item(self, item, spider):
         return item
@@ -42,12 +43,48 @@ class MysqlPipeline(object):
         self.cursor = self.conn.cursor()
 
     def process_item(self, item, spider):
+        # , content, create_time, front_img_url)
         insert_sql = """
-          insert into jobbole(title, url, praise_nums, fav_nums, content, create_time, front_img_url)
+          insert into jobbole(title, url, praise_nums, fav_nums, create_time) 
+          VALUES (%s, %s, %s, %s, %s )
+        """
+        self.cursor.execute(insert_sql, (item["title"], item["url"], item["praise_nums"], item["fav_nums"], item["create_time"]))
+        #, item["content"], item["create_time"], item["front_img_url"]
+        self.conn.commit()
+
+
+class MysqlTwistedPipeline(object):
+    def __init__(self, dbpool):
+        self.dbpool = dbpool
+
+    @classmethod
+    def from_settings(cls, settings):
+        dbparms = dict(
+            host=settings["MYSQL_HOST"],
+            db=settings["MYSQL_DBNAME"],
+            user=settings["MYSQL_USER"],
+            passwd=settings["MYSQL_PASSWORD"],
+            charset='utf8',
+            cursorclass=MySQLdb.cursors.DictCursor,
+            use_unicode=True,
+        )
+        dbpool = adbapi.ConnectionPool("MySQLdb", **dbparms)
+        return cls(dbpool)
+
+    def process_item(self, item, spider):
+        query = self.dbpool.runInteraction(self.do_insert, item)
+        query.addErrback(self.handle_error)
+
+    def handle_error(self,failure):
+        print(failure)
+
+    def do_insert(self, cursor, item):
+        insert_sql = """
+          insert into jobbole(title, url, praise_nums, fav_nums, create_time, content, front_img_url) 
           VALUES (%s, %s, %s, %s, %s, %s, %s)
         """
-        self.cursor.execute(insert_sql, (item["title"], item["url"], item["praise_nums"], item["fav_nums"], item["content"], item["create_time"], item["front_img_url"]) )
-        self.conn.commit()
+        cursor.execute(insert_sql, (item["title"], item["url"], item["praise_nums"], item["fav_nums"], item["create_time"], item["content"], item["front_img_url"]))
+        #, item["content"], item["create_time"], item["front_img_url"]
 
 class ArticleImagePipeline(ImagesPipeline):
     def item_completed(self, results, item, info):

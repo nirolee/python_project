@@ -67,7 +67,7 @@ ROBOTSTXT_OBEY = False
 ITEM_PIPELINES = {
    # 'ArticleSpider.pipelines.ArticlespiderPipeline': 300,
    # 'ArticleSpider.pipelines.JsonExportPipeline': 2,
-   'ArticleSpider.pipelines.MysqlPipeline': 1,
+   'ArticleSpider.pipelines.MysqlTwistedPipeline': 1,
    # 'scrapy.pipelines.images.ImagesPipeline': 1, #数字越小代表越先处理
    # 'ArticleSpider.pipelines.ArticleImagePipeline': 1,
 }
@@ -94,5 +94,10 @@ IMAGES_STORE = os.path.join(project_dir, 'images')
 #HTTPCACHE_DIR = 'httpcache'
 #HTTPCACHE_IGNORE_HTTP_CODES = []
 #HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
-HTTPCACHE_IGNORE_HTTP_CODES = [301,302]
+#HTTPCACHE_IGNORE_HTTP_CODES = [301,302]
 FEED_EXPORT_ENCODING = 'UTF-8'
+
+MYSQL_HOST = '127.0.0.1'
+MYSQL_DBNAME = 'scrapy'
+MYSQL_USER = 'root'
+MYSQL_PASSWORD = 'root'
