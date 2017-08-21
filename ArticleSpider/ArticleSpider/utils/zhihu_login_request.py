@@ -39,7 +39,6 @@ def get_captcha():
     with open('captcha.jpg', 'wb') as f:
         f.write(r.content)
         f.close()
-    session.cookies.save()
     # 用pillow 的 Image 显示验证码
     # 如果没有安装 pillow 到源代码所在的目录去找到验证码然后手动输入
     try:
