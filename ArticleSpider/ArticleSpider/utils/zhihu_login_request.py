@@ -18,23 +18,23 @@ try:
 except IOError:
     print('Cookie未加载！')
 
-agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.101 Safari/537.36"
+agent = "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.101 Mobile Safari/537.36"
 header = {
     "HOST":"www.zhihu.com",
     "Referer":"https://www.zhihu.com",
     "User-Agent":agent
 }
-captcha_index = [[12.95, 14.969999999999998], [36.1, 16.009999999999998], [57.16, 24.44], [84.52, 19.17],
-                              [108.72, 28.64], [132.95, 24.44], [151.89, 23.380000000000002]]
+# captcha_index = [[12.95, 14.969999999999998], [36.1, 16.009999999999998], [57.16, 24.44], [84.52, 19.17],
+#                               [108.72, 28.64], [132.95, 24.44], [151.89, 23.380000000000002]]
 # 获取验证码
 def get_captcha():
-    # t = str(int(time.time() * 1000))
-    response = session.get("https://www.zhihu.com", headers=header)
-    pattern_captcha_timestmp = r'<script type="text/json" class="json-inline" data-name="ga_vars">{"user_created":0,"now":(.*?),'
-    ss = response.text
-    _captcha_timestmp = re.findall(pattern_captcha_timestmp, ss, re.S | re.I)
-    timestamp = _captcha_timestmp[0]
-    captcha_url = 'https://www.zhihu.com/captcha.gif?r=' + timestamp + "&type=login&lang=cn"
+    t = str(int(time.time() * 1000))
+    # response = session.get("https://www.zhihu.com", headers=header)
+    # pattern_captcha_timestmp = r'<script type="text/json" class="json-inline" data-name="ga_vars">{"user_created":0,"now":(.*?),'
+    # ss = response.text
+    # _captcha_timestmp = re.findall(pattern_captcha_timestmp, ss, re.S | re.I)
+    # timestamp = _captcha_timestmp[0]
+    captcha_url = 'https://www.zhihu.com/captcha.gif?r=' + t + "&type=login"
     r = session.get(captcha_url, headers=header)
     with open('captcha.jpg', 'wb') as f:
         f.write(r.content)
@@ -47,14 +47,15 @@ def get_captcha():
         im.close()
     except:
         print(u'请到 %s 目录找到captcha.jpg 手动输入' % os.path.abspath('captcha.jpg'))
-    captcha = []
-    index_input = input("请输入验证码(1-7对应倒立的文字，比如第三六个就输入36):")
-    index_list = list(str(index_input))
-    for index in index_list:
-        for index_, location in enumerate(captcha_index):
-            if (index_ + 1) == int(index):
-                captcha.append(location)
-    captcha = {"img_size": [200, 44], "input_points": captcha}
+    # captcha = []
+    # index_input = input("请输入验证码(1-7对应倒立的文字，比如第三六个就输入36):")
+    # index_list = list(str(index_input))
+    # for index in index_list:
+    #     for index_, location in enumerate(captcha_index):
+    #         if (index_ + 1) == int(index):
+    #             captcha.append(location)
+    # captcha = {"img_size": [200, 44], "input_points": captcha}
+    captcha = input("please input the captcha\n>")
     return captcha
 
 # def location(a,b):
@@ -100,7 +101,6 @@ def zhihu_login(account,password):
         response_code = response_page.json()
         if response_code['r'] == 1:
             post_data["captcha"] = get_captcha()
-            post_data["captcha_type"] = 'cn'
             response_page = session.post(post_url, data=post_data, headers=header)
             response_code = response_page.json()
             print(response_code['msg'])
