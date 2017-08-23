@@ -71,6 +71,7 @@ def get_index():
     response = session.get("https://www.zhihu.com/people/li-guo-qi-80/activities", headers=header)
     with open("asdad.html", "wb") as f:
         f.write(response.text.encode('utf-8'))
+        f.close()
         print("ok")
 def is_login():
     inbox_url = "https://www.zhihu.com/inbox"

@@ -22,6 +22,8 @@ def date_convert(value):
     except Exception as e:
         create_time = datetime.datetime.now().date()
     return create_time
+
+
 def get_num_value(value):
     match_nums = re.match(".*(\d+).*", value)
     if (match_nums):
@@ -29,8 +31,12 @@ def get_num_value(value):
     else:
         nums = 0
     return nums
+
+
 class ArticleItemLoader(ItemLoader):
     default_output_processor = TakeFirst()
+
+
 class JobBoleArticleItem(scrapy.Item):
     title = scrapy.Field()
     # front_img_path = scrapy.Field()
@@ -43,6 +49,6 @@ class JobBoleArticleItem(scrapy.Item):
     )
     content = scrapy.Field()
     create_time = scrapy.Field(
-        input_processor = MapCompose(date_convert),
+        input_processor=MapCompose(date_convert),
     )
     front_img_url = scrapy.Field()
