@@ -4,6 +4,7 @@ import re
 import json
 import time
 import os
+from urllib import parse
 from scrapy.http.cookies import CookieJar
 from scrapy.http import Request, FormRequest
 from PIL import Image
@@ -43,7 +44,7 @@ class ZhihuSpider(scrapy.Spider):
     # cookiejar = CookieJar()
     # 这是入口！
     def start_requests(self):#代替start_urls
-        yield scrapy.Request('https://www.zhihu.com/people/li-guo-qi-80/activities', cookies=self.cookies, headers = self.header)
+        yield scrapy.Request("https://www.zhihu.com", cookies=self.cookies, headers = self.header)
         # return [Request(
         #     url='https://www.zhihu.com/#signin',
         #     headers=self.header,
@@ -54,12 +55,11 @@ class ZhihuSpider(scrapy.Spider):
 
     def parse(self, response):
         # print(response.request.headers.getlist('Cookie'))
-        with open("liguoqi.html", "wb") as f:
-            f.write(response.text.encode('utf-8'))
-            f.close()
-            print("ok")
-        pass
-
+        all_urls = response.css('a::attr(href)').extract()
+        for i, url in enumerate(all_urls):
+            all_urls[i] = parse.urljoin(response.url, url)
+        for url in all_urls:
+            pass
     def login(self, response):
         response_text = response.text
         match_obj = re.match('.*name="_xsrf" value="(.*?)"', response_text, re.S)
