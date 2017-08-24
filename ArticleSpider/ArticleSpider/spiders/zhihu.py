@@ -58,8 +58,12 @@ class ZhihuSpider(scrapy.Spider):
         all_urls = response.css('a::attr(href)').extract()
         for i, url in enumerate(all_urls):
             all_urls[i] = parse.urljoin(response.url, url)
+        all_urls = filter(lambda x: True if x.startswith('https') else False, all_urls)
         for url in all_urls:
-            pass
+            match_obj = re.match('.*question/\d+',url)
+            if match_obj:
+                questions = match_obj.group(1)
+        pass
     def login(self, response):
         response_text = response.text
         match_obj = re.match('.*name="_xsrf" value="(.*?)"', response_text, re.S)
