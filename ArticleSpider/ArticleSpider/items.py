@@ -52,3 +52,18 @@ class JobBoleArticleItem(scrapy.Item):
         input_processor=MapCompose(date_convert),
     )
     front_img_url = scrapy.Field()
+
+
+class ZhihuAnswerItem(scrapy.Item):
+    topics = scrapy.Field()
+    url = scrapy.Field()
+    title = scrapy.Field()
+    content = scrapy.Field()
+    create_time = scrapy.Field()
+    update_time = scrapy.Field()
+    answer_num = scrapy.Field()
+    comments_num = scrapy.Field()
+    watch_user_num = scrapy.Field()
+    click_num = scrapy.Field()
+    crawl_time = scrapy.Field()
+    crawl_update_time = scrapy.Field()

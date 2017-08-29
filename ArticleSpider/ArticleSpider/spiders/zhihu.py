@@ -8,12 +8,15 @@ from urllib import parse
 from scrapy.http.cookies import CookieJar
 from scrapy.http import Request, FormRequest
 from PIL import Image
+from scrapy.loader import ItemLoader
+from ArticleSpider.items import ZhihuAnswerItem
 from zheye import zheye
 
 class ZhihuSpider(scrapy.Spider):
     name = 'zhihu'
     allowed_domains = ['www.zhihu.com']
     start_urls = ['http://www.zhihu.com/']
+    start_answer_urls = '''https://www.zhihu.com/api/v4/questions/{0}/answers?include=data%5B*%5D.is_normal%2Cadmin_closed_comment%2Creward_info%2Cis_collapsed%2Cannotation_action%2Cannotation_detail%2Ccollapse_reason%2Cis_sticky%2Ccollapsed_by%2Csuggest_edit%2Ccomment_count%2Ccan_comment%2Ccontent%2Ceditable_content%2Cvoteup_count%2Creshipment_settings%2Ccomment_permission%2Ccreated_time%2Cupdated_time%2Creview_info%2Cquestion%2Cexcerpt%2Crelationship.is_authorized%2Cis_author%2Cvoting%2Cis_thanked%2Cis_nothelp%2Cupvoted_followees%3Bdata%5B*%5D.mark_infos%5B*%5D.url%3Bdata%5B*%5D.author.follower_count%2Cbadge%5B%3F(type%3Dbest_answerer)%5D.topics&offset={1}&limit={2}&sort_by=default'''
     header = {
         "HOST": "www.zhihu.com",
         "Referer": "https://www.zhihu.com",
@@ -60,10 +63,27 @@ class ZhihuSpider(scrapy.Spider):
             all_urls[i] = parse.urljoin(response.url, url)
         all_urls = filter(lambda x: True if x.startswith('https') else False, all_urls)
         for url in all_urls:
-            match_obj = re.match('.*question/\d+',url)
+            match_obj = re.match('(.*zhihu.com/question/(\d+)/|$)', url)
             if match_obj:
-                questions = match_obj.group(1)
+                request_url = match_obj.group(1)
+                yield scrapy.Request(request_url, headers=self.header, cookies=self.cookies, callback=self.parse_question)
+            else:
+                yield scrapy.Request(url, headers=self.header, cookies=self.cookies)
         pass
+
+
+    def parse_question(self, response):
+        match_obj = re.match('(.*zhihu.com/question/(\d+)/|$)', response.url)
+        if match_obj:
+            question_id = int(match_obj.group(2))
+        item_loader = ItemLoader(item=ZhihuAnswerItem(),response=response)
+        item_loader.add_css("title", "h1.QuestionHeader-title::text")
+        item_loader.add_css("content", ".QuestionRichText--expandable span::text")
+        item_loader.add_value("url", response.url)
+        item_loader.add_css("answer_num", ".List-headerText span::text")
+        item_loader.add_css("click_num", ".NumberBoard-value::text")
+        question_item = item_loader.load_item()
+        print(question_item)
     def login(self, response):
         response_text = response.text
         match_obj = re.match('.*name="_xsrf" value="(.*?)"', response_text, re.S)
