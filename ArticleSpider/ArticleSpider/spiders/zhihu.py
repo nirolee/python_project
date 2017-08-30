@@ -73,17 +73,28 @@ class ZhihuSpider(scrapy.Spider):
 
 
     def parse_question(self, response):
-        match_obj = re.match('(.*zhihu.com/question/(\d+)/|$)', response.url)
+        match_obj = re.match('(.*zhihu.com/question/(\d+))(/|$).*', response.url)
         if match_obj:
             question_id = int(match_obj.group(2))
         item_loader = ItemLoader(item=ZhihuAnswerItem(),response=response)
         item_loader.add_css("title", "h1.QuestionHeader-title::text")
         item_loader.add_css("content", ".QuestionRichText--expandable span::text")
         item_loader.add_value("url", response.url)
+        item_loader.add_value("zhihu_id", question_id, 20 ,0)
         item_loader.add_css("answer_num", ".List-headerText span::text")
-        item_loader.add_css("click_num", ".NumberBoard-value::text")
+        item_loader.add_css("click_num", ".NumberBoard-value:nth-child(2)::text")
+        item_loader.add_css("watch_user_num", ".NumberBoard-value::text")
+        item_loader.add_css("topics", ".QuestionHeader-topics::text")
         question_item = item_loader.load_item()
-        print(question_item)
+        yield scrapy.Request(url=self.start_answer_urls.format(question_id,0,20), headers=self.header, cookies=self.cookies, callback=self.parse_answer)
+
+
+    def parse_answer(self,response):
+        answer_json = json.loads(response.text)
+        pass
+
+
+
     def login(self, response):
         response_text = response.text
         match_obj = re.match('.*name="_xsrf" value="(.*?)"', response_text, re.S)

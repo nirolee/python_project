@@ -109,5 +109,5 @@ def zhihu_login(account,password):
 # is_login()
 # get_index()
 # get_captcha()
-zhihu_login("13632499177", "88322429")
+zhihu_login("", "")
 # get_xsrf()

@@ -55,6 +55,7 @@ class JobBoleArticleItem(scrapy.Item):
 
 
 class ZhihuAnswerItem(scrapy.Item):
+    zhihu_id = scrapy.Field()
     topics = scrapy.Field()
     url = scrapy.Field()
     title = scrapy.Field()
