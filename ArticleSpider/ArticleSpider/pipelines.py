@@ -79,11 +79,14 @@ class MysqlTwistedPipeline(object):
         print(failure)
 
     def do_insert(self, cursor, item):
-        insert_sql = """
-          insert into jobbole(title, url, praise_nums, fav_nums, create_time, content, front_img_url) 
-          VALUES (%s, %s, %s, %s, %s, %s, %s)
-        """
-        cursor.execute(insert_sql, (item["title"], item["url"], item["praise_nums"], item["fav_nums"], item["create_time"], item["content"], item["front_img_url"]))
+        # 根据不同的item构建不同的sql语句
+        insert_sql, params = item.get_insert_sql()
+        cursor.execute(insert_sql, params)
+        # insert_sql = """
+        #   insert into jobbole(title, url, praise_nums, fav_nums, create_time, content, front_img_url)
+        #   VALUES (%s, %s, %s, %s, %s, %s, %s)
+        # """
+        # cursor.execute(insert_sql, (item["title"], item["url"], item["praise_nums"], item["fav_nums"], item["create_time"], item["content"], item["front_img_url"]))
         #, item["content"], item["create_time"], item["front_img_url"]
 
 class ArticleImagePipeline(ImagesPipeline):
