@@ -60,10 +60,18 @@ class ZhihuSpider(scrapy.Spider):
             all_urls[i] = parse.urljoin(response.url, url)
         all_urls = filter(lambda x: True if x.startswith('https') else False, all_urls)
         for url in all_urls:
-            match_obj = re.match('.*question/\d+',url)
+            print(url)
+            match_obj = re.match('(.*zhihu.com/question/(\d+)(/|$)).*', url)
             if match_obj:
-                questions = match_obj.group(1)
+                request_url = match_obj.group(1)
+                question_id = match_obj.group(2)
+                print(request_url, question_id)
+            yield scrapy.Request(url=request_url, headers=self.header, cookies=self.cookies, callback=self.question_detail)
         pass
+
+
+    def parse_detail(self,response):
+        
     def login(self, response):
         response_text = response.text
         match_obj = re.match('.*name="_xsrf" value="(.*?)"', response_text, re.S)
