@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-import os
-# Scrapy settings for ArticleSpider project
+
+# Scrapy settings for ScrapyRedisTest project
 #
 # For simplicity, this file contains only settings considered important or
 # commonly used. You can find more settings consulting the documentation:
@@ -9,14 +9,14 @@ import os
 #     http://scrapy.readthedocs.org/en/latest/topics/downloader-middleware.html
 #     http://scrapy.readthedocs.org/en/latest/topics/spider-middleware.html
 
-BOT_NAME = 'ArticleSpider'
+BOT_NAME = 'ScrapyRedisTest'
 
-SPIDER_MODULES = ['ArticleSpider.spiders']
-NEWSPIDER_MODULE = 'ArticleSpider.spiders'
+SPIDER_MODULES = ['ScrapyRedisTest.spiders']
+NEWSPIDER_MODULE = 'ScrapyRedisTest.spiders'
 
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
-#USER_AGENT = 'ArticleSpider (+http://www.yourdomain.com)'
+#USER_AGENT = 'ScrapyRedisTest (+http://www.yourdomain.com)'
 
 # Obey robots.txt rules
 ROBOTSTXT_OBEY = False
@@ -47,13 +47,17 @@ ROBOTSTXT_OBEY = False
 # Enable or disable spider middlewares
 # See http://scrapy.readthedocs.org/en/latest/topics/spider-middleware.html
 #SPIDER_MIDDLEWARES = {
-#    'ArticleSpider.middlewares.ArticlespiderSpiderMiddleware': 543,
+#    'ScrapyRedisTest.middlewares.ScrapyredistestSpiderMiddleware': 543,
 #}
-
+SCHEDULER = "scrapy_redis.scheduler.Scheduler"
+DUPEFILTER_CLASS = "scrapy_redis.dupefilter.RFPDupeFilter"
+ITEM_PIPELINES = {
+    'scrapy_redis.pipelines.RedisPipeline': 300
+}
 # Enable or disable downloader middlewares
 # See http://scrapy.readthedocs.org/en/latest/topics/downloader-middleware.html
 #DOWNLOADER_MIDDLEWARES = {
-#    'ArticleSpider.middlewares.MyCustomDownloaderMiddleware': 543,
+#    'ScrapyRedisTest.middlewares.MyCustomDownloaderMiddleware': 543,
 #}
 
 # Enable or disable extensions
@@ -64,16 +68,10 @@ ROBOTSTXT_OBEY = False
 
 # Configure item pipelines
 # See http://scrapy.readthedocs.org/en/latest/topics/item-pipeline.html
-ITEM_PIPELINES = {
-   'ArticleSpider.pipelines.ArticlespiderPipeline': 300,
-   # 'ArticleSpider.pipelines.JsonExportPipeline': 2,
-   'ArticleSpider.pipelines.MysqlTwistedPipeline': 1,
-   # 'scrapy.pipelines.images.ImagesPipeline': 1, #数字越小代表越先处理
-   # 'ArticleSpider.pipelines.ArticleImagePipeline': 1,
-}
-IMAGES_URLS_FIELD = "front_img_url"
-project_dir = os.path.abspath(os.path.dirname(__file__))
-IMAGES_STORE = os.path.join(project_dir, 'images')
+#ITEM_PIPELINES = {
+#    'ScrapyRedisTest.pipelines.ScrapyredistestPipeline': 300,
+#}
+
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See http://doc.scrapy.org/en/latest/topics/autothrottle.html
 #AUTOTHROTTLE_ENABLED = True
@@ -94,10 +92,3 @@ IMAGES_STORE = os.path.join(project_dir, 'images')
 #HTTPCACHE_DIR = 'httpcache'
 #HTTPCACHE_IGNORE_HTTP_CODES = []
 #HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
-#HTTPCACHE_IGNORE_HTTP_CODES = [301,302]
-FEED_EXPORT_ENCODING = 'UTF-8'
-
-MYSQL_HOST = '127.0.0.1'
-MYSQL_DBNAME = 'scrapy'
-MYSQL_USER = 'root'
-MYSQL_PASSWORD = 'root'
