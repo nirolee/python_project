@@ -56,9 +56,11 @@ ITEM_PIPELINES = {
 }
 # Enable or disable downloader middlewares
 # See http://scrapy.readthedocs.org/en/latest/topics/downloader-middleware.html
-#DOWNLOADER_MIDDLEWARES = {
-#    'ScrapyRedisTest.middlewares.MyCustomDownloaderMiddleware': 543,
-#}
+DOWNLOADER_MIDDLEWARES = {
+   # 'ScrapyRedisTest.middlewares.MyCustomDownloaderMiddleware': 543,
+    'ScrapyRedisTest.middlewares.ProxyMiddleware': 400,
+    'scrapy.downloadermiddlewares.httpproxy.HttpProxyMiddleware': None,
+}
 
 # Enable or disable extensions
 # See http://scrapy.readthedocs.org/en/latest/topics/extensions.html
@@ -92,3 +94,11 @@ ITEM_PIPELINES = {
 #HTTPCACHE_DIR = 'httpcache'
 #HTTPCACHE_IGNORE_HTTP_CODES = []
 #HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
+# Specify the host and port to use when connecting to Redis (optional).
+REDIS_HOST = '127.0.0.1'
+REDIS_PORT = 6379
+
+# Custom redis client parameters (i.e.: socket timeout, etc.)
+REDIS_PARAMS  = {}
+#REDIS_URL = 'redis://user:pass@hostname:9001'
+# REDIS_PARAMS['password'] = 'itcast.cn'
