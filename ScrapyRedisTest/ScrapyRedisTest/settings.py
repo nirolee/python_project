@@ -94,6 +94,7 @@ DOWNLOADER_MIDDLEWARES = {
 #HTTPCACHE_DIR = 'httpcache'
 #HTTPCACHE_IGNORE_HTTP_CODES = []
 #HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
+<<<<<<< HEAD
 # Specify the host and port to use when connecting to Redis (optional).
 REDIS_HOST = '127.0.0.1'
 REDIS_PORT = 6379
@@ -102,3 +103,7 @@ REDIS_PORT = 6379
 REDIS_PARAMS  = {}
 #REDIS_URL = 'redis://user:pass@hostname:9001'
 # REDIS_PARAMS['password'] = 'itcast.cn'
+=======
+
+SCHEDULER_PERSIST = True
+>>>>>>> 4e9e415868f1510c93a22d79e7b67fc4148c11c6
