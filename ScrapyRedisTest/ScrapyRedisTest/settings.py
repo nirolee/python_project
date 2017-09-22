@@ -52,7 +52,8 @@ ROBOTSTXT_OBEY = False
 SCHEDULER = "scrapy_redis.scheduler.Scheduler"
 DUPEFILTER_CLASS = "scrapy_redis.dupefilter.RFPDupeFilter"
 ITEM_PIPELINES = {
-    'scrapy_redis.pipelines.RedisPipeline': 300
+    'scrapy_redis.pipelines.RedisPipeline': 300,
+    # 'ScrapyRedisTest.pipelines.MysqlTwistedPipeline': 1,
 }
 # Enable or disable downloader middlewares
 # See http://scrapy.readthedocs.org/en/latest/topics/downloader-middleware.html
@@ -94,16 +95,14 @@ DOWNLOADER_MIDDLEWARES = {
 #HTTPCACHE_DIR = 'httpcache'
 #HTTPCACHE_IGNORE_HTTP_CODES = []
 #HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
-<<<<<<< HEAD
 # Specify the host and port to use when connecting to Redis (optional).
-REDIS_HOST = '127.0.0.1'
-REDIS_PORT = 6379
+# REDIS_URL = 'redis://139.199.224.13:6379'
 
+REDIS_HOST = 'localhost'
+REDIS_PORT = 6379
 # Custom redis client parameters (i.e.: socket timeout, etc.)
 REDIS_PARAMS  = {}
 #REDIS_URL = 'redis://user:pass@hostname:9001'
 # REDIS_PARAMS['password'] = 'itcast.cn'
-=======
 
 SCHEDULER_PERSIST = True
->>>>>>> 4e9e415868f1510c93a22d79e7b67fc4148c11c6

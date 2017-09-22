@@ -49,3 +49,23 @@ class JobBoleArticleItem(scrapy.Item):
         input_processor=MapCompose(date_convert),
     )
     front_img_url = scrapy.Field()
+
+class TencentItem(scrapy.Item):
+    title = scrapy.Field()
+    work_type = scrapy.Field()
+    num = scrapy.Field()
+    location = scrapy.Field()
+    duty = scrapy.Field()
+    request = scrapy.Field()
+
+    def get_insert_sql(self):
+        insert_sql = """
+        INSERT  INTO tencentHR (title,work_type,num,location,duty,request) VALUES (%s,%s,%s,%s,%s,%s)
+        ON DUPLICATE KEY UPDATE
+        title=VALUES(title),work_type=VALUES(work_type),num=VALUES(num),location=VALUES(location),
+        duty=VALUES(duty),request=VALUES (request)
+    """
+        params = (
+            self["title"], self["work_type"], self["num"], self["location"],self["duty"], self["request"]
+        )
+        return insert_sql, params

@@ -19,7 +19,8 @@ class JobboleSpider(scrapy.Spider):
         for post_node in post_nodes:
             post_url = post_node.css("::attr(href)").extract_first("")
             img_url = post_node.css("img::attr(src)").extract_first("")
-            yield Request(url=parse.urljoin(response.url, post_url), meta={"front_img_url": img_url}, callback=self.parse_detail)
+            yield Request(url=parse.urljoin(response.url, post_url), meta={"front_img_url": img_url},
+                          callback=self.parse_detail)
         next_url = response.css(".next.page-numbers::attr(href)").extract_first()
         if next_url:
             yield Request(url=parse.urljoin(response.url, next_url), callback=self.parse)

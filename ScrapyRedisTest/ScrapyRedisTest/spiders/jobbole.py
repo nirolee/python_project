@@ -4,6 +4,7 @@ from scrapy.http import Request
 from urllib import parse
 
 from scrapy_redis.spiders import RedisSpider
+from ScrapyRedisTest.items import JobBoleArticleItem
 
 class JobboleSpider(RedisSpider):
     name = 'jobbole'
@@ -12,7 +13,6 @@ class JobboleSpider(RedisSpider):
 
     # 收集伯乐在线所有404的url以及404页面数
     handle_httpstatus_list = [404]
-
 
     def parse(self, response):
         """
@@ -23,7 +23,6 @@ class JobboleSpider(RedisSpider):
         if response.status == 404:
             self.fail_urls.append(response.url)
             self.crawler.stats.inc_value("failed_url")
-
         post_nodes = response.css("#archive .floated-thumb .post-thumb a")
         for post_node in post_nodes:
             image_url = post_node.css("img::attr(src)").extract_first("")
@@ -37,4 +36,5 @@ class JobboleSpider(RedisSpider):
             yield Request(url=parse.urljoin(response.url, post_url), callback=self.parse)
 
     def parse_detail(self, response):
-        pass
+        front_image_url = response.meta.get("front_img_url", "")  # 封面图
+        item_loader = JobBoleArticleItem()
