@@ -3,10 +3,10 @@
 from scrapy.http import Request
 from urllib import parse
 import re
-from scrapy_redis.spiders import RedisSpider
+from scrapy_redis.spiders import RedisCrawlSpider
 from ScrapyRedisTest.items import TencentItem
 
-class TencentSpider(RedisSpider):
+class TencentSpider(RedisCrawlSpider):
     name = 'tencent'
     allowed_domains = ['hr.tencent.com']
     start_urls = ['http://hr.tencent.com/position.php']
