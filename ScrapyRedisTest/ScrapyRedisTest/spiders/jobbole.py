@@ -9,7 +9,7 @@ from ScrapyRedisTest.items import JobBoleArticleItem
 class JobboleSpider(RedisSpider):
     name = 'jobbole'
     allowed_domains = ["blog.jobbole.com"]
-    redis_key = 'jobbole:start_urls'
+    redis_key = 'c'
 
     # 收集伯乐在线所有404的url以及404页面数
     handle_httpstatus_list = [404]

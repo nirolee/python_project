@@ -53,15 +53,15 @@ SCHEDULER = "scrapy_redis.scheduler.Scheduler"
 DUPEFILTER_CLASS = "scrapy_redis.dupefilter.RFPDupeFilter"
 ITEM_PIPELINES = {
     'scrapy_redis.pipelines.RedisPipeline': 300,
-    # 'ScrapyRedisTest.pipelines.MysqlTwistedPipeline': 1,
+    'ScrapyRedisTest.pipelines.MysqlTwistedPipeline': 400,
 }
 # Enable or disable downloader middlewares
 # See http://scrapy.readthedocs.org/en/latest/topics/downloader-middleware.html
-DOWNLOADER_MIDDLEWARES = {
-   # 'ScrapyRedisTest.middlewares.MyCustomDownloaderMiddleware': 543,
-    'ScrapyRedisTest.middlewares.ProxyMiddleware': 400,
-    'scrapy.downloadermiddlewares.httpproxy.HttpProxyMiddleware': None,
-}
+# DOWNLOADER_MIDDLEWARES = {
+#    # 'ScrapyRedisTest.middlewares.MyCustomDownloaderMiddleware': 543,
+#     'ScrapyRedisTest.middlewares.ProxyMiddleware': 400,
+#     'scrapy.downloadermiddlewares.httpproxy.HttpProxyMiddleware': None,
+# }
 
 # Enable or disable extensions
 # See http://scrapy.readthedocs.org/en/latest/topics/extensions.html
@@ -96,14 +96,19 @@ DOWNLOADER_MIDDLEWARES = {
 #HTTPCACHE_IGNORE_HTTP_CODES = []
 #HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
 # Specify the host and port to use when connecting to Redis (optional).
-# REDIS_URL = 'redis://139.199.224.13:6379'
-REDIS_URL = 'redis://127.0.0.1:6379'
-REDIS_HOST = 'localhost'
-REDIS_PORT = 6379
+# REDIS_URL = 'redis://root:88322429@139.199.224.13:6379'
+# REDIS_URL = 'redis://127.0.0.1:6379'
+# REDIS_HOST = '127.0.0.1'
+# REDIS_PORT = 6379
 # Custom redis client parameters (i.e.: socket timeout, etc.)
 REDIS_PARAMS  = {}
 #REDIS_URL = 'redis://user:pass@hostname:9001'
 # REDIS_PARAMS['password'] = 'itcast.cn'
+DUPEFILTER_DEBUG =True
+MYSQL_HOST = '139.199.224.13'
+MYSQL_DBNAME = 'scrapy'
+MYSQL_USER = 'root'
+MYSQL_PASSWORD = '88322429'
 
 SCHEDULER_PERSIST = True
 SCHEDULER_QUEUE_CLASS = 'scrapy_redis.queue.SpiderPriorityQueue'
