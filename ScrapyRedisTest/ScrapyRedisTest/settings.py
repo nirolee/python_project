@@ -96,16 +96,17 @@ ITEM_PIPELINES = {
 #HTTPCACHE_IGNORE_HTTP_CODES = []
 #HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
 # Specify the host and port to use when connecting to Redis (optional).
-# REDIS_URL = 'redis://root:88322429@139.199.224.13:6379'
+REDIS_URL = 'redis://root:88322429@139.199.224.13:6379'
 # REDIS_URL = 'redis://127.0.0.1:6379'
 # REDIS_HOST = '127.0.0.1'
 # REDIS_PORT = 6379
 # Custom redis client parameters (i.e.: socket timeout, etc.)
 REDIS_PARAMS  = {}
 #REDIS_URL = 'redis://user:pass@hostname:9001'
-# REDIS_PARAMS['password'] = 'itcast.cn'
-DUPEFILTER_DEBUG =True
+REDIS_PARAMS['password'] = '88322429'
+DUPEFILTER_DEBUG = True
 MYSQL_HOST = '139.199.224.13'
+# MYSQL_HOST = '127.0.0.1'
 MYSQL_DBNAME = 'scrapy'
 MYSQL_USER = 'root'
 MYSQL_PASSWORD = '88322429'

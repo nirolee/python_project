@@ -60,12 +60,12 @@ class TencentItem(scrapy.Item):
 
     def get_insert_sql(self):
         insert_sql = """
-        INSERT  INTO tencentHR (title,work_type,num,location,duty,request) VALUES (%s,%s,%s,%s,%s,%s)
+        INSERT  INTO tencentHR (title,work_type,num,location,duty,request,from_client) VALUES (%s,%s,%s,%s,%s,%s,%s)
         ON DUPLICATE KEY UPDATE
         title=VALUES(title),work_type=VALUES(work_type),num=VALUES(num),location=VALUES(location),
-        duty=VALUES(duty),request=VALUES (request)
+        duty=VALUES(duty),request=VALUES (request),from_client=VALUES (from_client)
     """
         params = (
-            self["title"], self["work_type"], self["num"], self["location"],self["duty"], self["request"]
+            self["title"], self["work_type"], self["num"], self["location"],self["duty"], self["request"], 'local'
         )
         return insert_sql, params
