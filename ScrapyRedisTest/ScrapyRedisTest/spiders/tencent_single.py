@@ -7,13 +7,21 @@ from scrapy_redis.spiders import RedisSpider
 from ScrapyRedisTest.items import TencentItem
 
 class TencentSpider(RedisSpider):
-    name = 'tencent'
+    name = 'tencent_single'
     allowed_domains = ['hr.tencent.com']
-    start_urls = []
+    start_urls = ['http://hr.tencent.com/position.php']
     root_url = 'http://hr.tencent.com'
     redis_key = 'tencent:start_urls'
 
     def parse(self, response):
+        url = response.css(".l.square a::attr(href)").extract()
+        for each_url in url:
+            yield Request(url=parse.urljoin(self.root_url, each_url), callback=self.parse_detail)
+        next_url = response.css("#next ::attr(href)").extract_first()
+        if next_url:
+            yield Request(url=parse.urljoin(self.root_url, next_url), callback=self.parse)
+
+    def parse_detail(self, response):
         tencent_item = TencentItem()
         tencent_item['title'] = response.css("#sharetitle::text").extract_first()
         tencent_item['location'] = response.css(".c.bottomline td::text").extract()[0]
