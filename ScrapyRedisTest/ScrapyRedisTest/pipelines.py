@@ -45,3 +45,9 @@ class MysqlTwistedPipeline(object):
         # 根据不同的item构建不同的sql语句
         insert_sql, params = item.get_insert_sql()
         cursor.execute(insert_sql, params)
+
+
+class ElasticsearchPipeline(object):
+    def process_item(self, item, spider):
+        item.save_to_es()
+        return  item

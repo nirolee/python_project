@@ -9,6 +9,7 @@ import scrapy
 import re
 import datetime
 from scrapy.loader.processors import MapCompose,TakeFirst
+from ScrapyRedisTest.models.es_types import ArticleType
 
 
 class ScrapyredistestItem(scrapy.Item):
@@ -49,6 +50,28 @@ class JobBoleArticleItem(scrapy.Item):
         input_processor=MapCompose(date_convert),
     )
     front_img_url = scrapy.Field()
+
+    def get_insert_sql(self):
+        insert_sql = """
+                    INSERT INTO jobbole (title, url,  create_time, content, fav_nums, praise_nums)
+                    VALUES (%s, %s, %s, %s, %s, %s)
+                    ON DUPLICATE KEY UPDATE fav_nums=VALUES(fav_nums)
+                """
+        params = (
+            self["title"], self['praise_nums'], self['url'], self['create_time'], self['content'],
+            self['praise_nums']
+        )
+        return  insert_sql,params
+    def save_to_es(self):
+        article = ArticleType()
+        article.title = self['title']
+        article.url = self['url']
+        article.content = self['content']
+        article.create_time = self['create_time']
+        article.praise_nums = self['praise_nums']
+        article.fav_nums = self['fav_nums']
+        article.save()
+        return
 
 class TencentItem(scrapy.Item):
     title = scrapy.Field()

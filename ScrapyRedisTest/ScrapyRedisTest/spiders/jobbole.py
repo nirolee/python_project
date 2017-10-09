@@ -9,7 +9,8 @@ from ScrapyRedisTest.items import JobBoleArticleItem
 class JobboleSpider(RedisSpider):
     name = 'jobbole'
     allowed_domains = ["blog.jobbole.com"]
-    redis_key = 'c'
+    start_urls = ['http://blog.jobbole.com/all-posts']
+    redis_key = 'jobbole:start_urls'
 
     # 收集伯乐在线所有404的url以及404页面数
     handle_httpstatus_list = [404]
@@ -33,8 +34,17 @@ class JobboleSpider(RedisSpider):
         # 提取下一页并交给scrapy进行下载
         next_url = response.css(".next.page-numbers::attr(href)").extract_first("")
         if next_url:
-            yield Request(url=parse.urljoin(response.url, post_url), callback=self.parse)
+            yield Request(url=next_url, callback=self.parse)
 
     def parse_detail(self, response):
-        front_image_url = response.meta.get("front_img_url", "")  # 封面图
-        item_loader = JobBoleArticleItem()
+        # front_image_url = response.meta.get("front_img_url", "")  # 封面图
+        article_item = JobBoleArticleItem()
+        article_item["title"] = response.css(".entry-header h1::text").extract()[0]
+        article_item["front_img_url"] = response.meta.get("front_img_url", "")
+        article_item["praise_nums"] =  response.css(".vote-post-up h10::text").extract_first("0")
+        article_item["fav_nums"] = response.css(".bookmark-btn::text").extract_first("0")
+        article_item["create_time"] = response.css(".entry-meta-hide-on-mobile::text").extract()[0].strip().replace("·", "")
+        article_item["url"] = response.url
+        article_item["content"] = response.css("div.entry").extract()[0]
+
+        yield article_item
