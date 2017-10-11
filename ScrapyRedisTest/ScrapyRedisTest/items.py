@@ -8,6 +8,7 @@
 import scrapy
 import re
 import datetime
+from scrapy.loader import ItemLoader
 from scrapy.loader.processors import MapCompose,TakeFirst
 from ScrapyRedisTest.models.es_types import ArticleType
 
@@ -33,6 +34,11 @@ def date_convert(value):
     except Exception as e:
         create_time = datetime.datetime.now().date()
     return create_time
+
+
+class ArticleItemLoader(ItemLoader):
+    # 自定义itemloader
+    default_output_processor = TakeFirst()
 
 
 class JobBoleArticleItem(scrapy.Item):

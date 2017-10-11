@@ -4,7 +4,7 @@ from scrapy.http import Request
 from urllib import parse
 
 from scrapy_redis.spiders import RedisSpider
-from ScrapyRedisTest.items import JobBoleArticleItem
+from ScrapyRedisTest.items import JobBoleArticleItem, ArticleItemLoader
 
 class JobboleSpider(RedisSpider):
     name = 'jobbole'
@@ -38,13 +38,14 @@ class JobboleSpider(RedisSpider):
 
     def parse_detail(self, response):
         # front_image_url = response.meta.get("front_img_url", "")  # 封面图
-        article_item = JobBoleArticleItem()
-        article_item["title"] = response.css(".entry-header h1::text").extract()[0]
-        article_item["front_img_url"] = response.meta.get("front_img_url", "")
-        article_item["praise_nums"] =  response.css(".vote-post-up h10::text").extract_first("0")
-        article_item["fav_nums"] = response.css(".bookmark-btn::text").extract_first("0")
-        article_item["create_time"] = response.css(".entry-meta-hide-on-mobile::text").extract()[0].strip().replace("·", "")
-        article_item["url"] = response.url
-        article_item["content"] = response.css("div.entry").extract()[0]
+        item_loader = ArticleItemLoader(item=JobBoleArticleItem(), response=response)
+        item_loader.add_css("title", ".entry-header h1::text")
+        item_loader.add_css("create_time", "p.entry-meta-hide-on-mobile::text")
+        item_loader.add_css("praise_nums", ".vote-post-up h10::text")
+        item_loader.add_css("fav_nums", ".bookmark-btn::text")
+        item_loader.add_css("content", "div.entry")
+        item_loader.add_value("url", response.url)
+
+        article_item = item_loader.load_item()
 
         yield article_item
