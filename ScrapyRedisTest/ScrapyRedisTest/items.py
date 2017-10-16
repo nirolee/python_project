@@ -8,12 +8,13 @@
 import scrapy
 import re
 import datetime
-from  scrapy.loader import ItemLoader
+from scrapy.loader import ItemLoader
 from scrapy.loader.processors import MapCompose, TakeFirst, Join
 from ScrapyRedisTest.models.es_types import ArticleType
 from elasticsearch_dsl.connections import connections
 
-es = connections.create_connection(ArticleType._doc_type.using)
+
+es = connections.get_connection(ArticleType._doc_type.using)
 
 class ScrapyredistestItem(scrapy.Item):
     # define the fields for your item here like:
@@ -28,6 +29,7 @@ def get_num_value(value):
     else:
         nums = 0
     return nums
+
 
 
 def date_convert(value):
@@ -65,6 +67,11 @@ def gen_suggests(index, info_tuple):
             suggests.append({"input": list(new_words), "weight": weight})
 
     return suggests
+
+
+class ArticleItemLoader(ItemLoader):
+    # 自定义itemloader
+    default_output_processor = TakeFirst()
 
 
 class JobBoleArticleItem(scrapy.Item):

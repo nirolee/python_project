@@ -22,7 +22,7 @@ class ArticleType(DocType):
     # suggest = Completion(analyzer="ik_max_word") # 官方代码有问题，不能这么用
     suggest = Completion(analyzer=ik_analyzer) # 这么用
     title = Text(analyzer="ik_max_word")
-    create_date = Date()
+    create_time = Date()
     url = Keyword()
     # url_object_id = Keyword()
     front_image_url = Keyword()
