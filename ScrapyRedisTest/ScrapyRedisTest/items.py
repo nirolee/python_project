@@ -8,9 +8,11 @@
 import scrapy
 import re
 import datetime
-from scrapy.loader.processors import MapCompose,TakeFirst
+from scrapy.loader.processors import MapCompose, TakeFirst, Join
 from ScrapyRedisTest.models.es_types import ArticleType
+from elasticsearch_dsl.connections import connections
 
+es = connections.create_connection(ArticleType.__doc__type.using)
 
 class ScrapyredistestItem(scrapy.Item):
     # define the fields for your item here like:
@@ -33,6 +35,25 @@ def date_convert(value):
     except Exception as e:
         create_time = datetime.datetime.now().date()
     return create_time
+
+class ArticleItemLoader(ItemLoader):
+    # 自定义itemloader
+    default_output_processor = TakeFirst()
+
+    
+def gen_suggests(index, info_tuple):
+    used_words = set()
+    suggests = []
+    for text, weight in info_tuple:
+        if text:     # 调用es的analyze分词器
+            words = es.indices.analyze(index=index, analyzer="ik_max_word", params={'filter': ["lowercase"]}, body=text)
+            analyzed_words = set([r["token"] for r in words if len(r["token"]>1)])
+            new_words = analyzed_words - used_words
+        else:
+            new_words = set()
+
+        if new_words:
+            suggests.append({"input": list(new_words), "weight": weight})
 
 
 class JobBoleArticleItem(scrapy.Item):
@@ -70,6 +91,7 @@ class JobBoleArticleItem(scrapy.Item):
         article.create_time = self['create_time']
         article.praise_nums = self['praise_nums']
         article.fav_nums = self['fav_nums']
+        article.suggest = gen_suggests(ArticleType._doc_type.index, ((article.title, article.t)))
         article.save()
         return
 
@@ -80,7 +102,9 @@ class TencentItem(scrapy.Item):
     location = scrapy.Field()
     duty = scrapy.Field()
     request = scrapy.Field()
-
+    tags = scrapy.Field(
+        output_processor=Join(",")
+    )
     def get_insert_sql(self):
         insert_sql = """
         INSERT  INTO tencentHR (title,work_type,num,location,duty,request,from_client) VALUES (%s,%s,%s,%s,%s,%s,%s)
