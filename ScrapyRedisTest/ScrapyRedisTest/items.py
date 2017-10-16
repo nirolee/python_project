@@ -12,7 +12,9 @@ from scrapy.loader import ItemLoader
 from scrapy.loader.processors import MapCompose,TakeFirst
 from ScrapyRedisTest.models.es_types import ArticleType
 
+from elasticsearch_dsl.connections import connections
 
+es = connections.get_connection(ArticleType._doc_type.using)
 class ScrapyredistestItem(scrapy.Item):
     # define the fields for your item here like:
     # name = scrapy.Field()
@@ -26,6 +28,9 @@ def get_num_value(value):
     else:
         nums = 0
     return nums
+
+
+def gen_suggest(value):
 
 
 def date_convert(value):
@@ -76,6 +81,7 @@ class JobBoleArticleItem(scrapy.Item):
         article.create_time = self['create_time']
         article.praise_nums = self['praise_nums']
         article.fav_nums = self['fav_nums']
+        article.suggest = gen_suggest()
         article.save()
         return
 
