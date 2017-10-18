@@ -5,6 +5,8 @@ from search.models import ArticleType
 from django.http import HttpResponse
 from elasticsearch import Elasticsearch
 import json
+import math
+from datetime import datetime
 client = Elasticsearch(hosts='127.0.0.1')
 
 class SearchSuggest(View):
@@ -31,20 +33,26 @@ class SearchSuggest(View):
 class SearchView(View):
     def get(self, request):
         key_words = request.GET.get('q', '')
+        start_time = datetime.now()
+        page = request.GET.get('p', '')
+        try:
+            page = int(page)
+        except:
+            page = 1
         response = client.search(
-            index= "jobbole",
-            body= {
+            index="jobbole",
+            body={
                 "query": {
                     "multi_match": {
                         "query": key_words,
                         "fields": ["title", "tags", "content"]
                     }
                 },
-                "from": 0,
+                "from": (page-1)*10,
                 "size": 10,
                 "highlight": {
-                    "pre_tags": ["<span class='keyword'>"],
-                    "post_tags": ["</span>"],
+                    "pre_tags": ['<span class="keyWord">'],
+                    "post_tags": ['</span>'],
                     "fields": {
                         "title": {},
                         "content": {}
@@ -54,10 +62,13 @@ class SearchView(View):
         )
         hits_list = []
         total_nums = response["hits"]["total"]
+        end_time = datetime.now()
+        last_seconds = (end_time - start_time).total_seconds
+        page_nums = math.ceil(total_nums / 10.0)
         for hit in response["hits"]["hits"]:
             hit_dict = {}
             if "title" in hit["highlight"]:
-                hit_dict["title"] = hit["highlight"]["title"][0]
+                hit_dict["title"] = "".join(hit["highlight"]["title"])
             if "content" in hit["highlight"]:
                 hit_dict["content"] = hit["highlight"]["content"][0]
             else:
@@ -67,5 +78,11 @@ class SearchView(View):
             hit_dict["score"] = hit["_score"]
             hits_list.append(hit_dict)
 
-        return render(request, "result.html", {"all_hits": hits_list, "key_words": key_words, "total_nums": total_nums,
-           "page_nums": total_nums/10})
+        return render(request, "result.html", {
+            "all_hits": hits_list,
+            "key_words": key_words,
+            "total_nums": total_nums,
+            "page_nums": page_nums,
+            "last_seconds": last_seconds,
+            "page": page
+        })

@@ -1,4 +1,3 @@
-
 <!DOCTYPE html >
 <html xmlns="http://www.w3.org/1999/xhtml">
 {% load staticfiles %}
@@ -12,8 +11,7 @@
 <body>
 <div id="container">
 	<div id="hd" class="ue-clear">
-{#    	<<a></a> href="/"><div class="logo"></div></a>#}
-        <div style="width: 200px; height:10px; float: left"> </div>
+    	<a href="/"><div class="logo"></div></a>
         <div class="inputArea">
         	<input type="text" class="searchInput" value="{{ key_words }}"/>
             <input type="button" class="searchButton" onclick="add_search()"/>
@@ -29,21 +27,21 @@
 	<div id="bd" class="ue-clear">
         <div id="main">
         	<div class="sideBar">
-            	
+
                 <div class="subfield">网站</div>
                 <ul class="subfieldContext">
                 	<li>
                     	<span class="name">伯乐在线</span>
 						<span class="unit">({{ jobbole_count }})</span>
                     </li>
-{#                    <li>#}
-{#                    	<span class="name">知乎</span>#}
-{#						<span class="unit">(9862)</span>#}
-{#                    </li>#}
-{#                    <li>#}
-{#                    	<span class="name">拉勾网</span>#}
-{#						<span class="unit">(9862)</span>#}
-{#                    </li>#}
+                    <li>
+                    	<span class="name">知乎</span>
+						<span class="unit">(9862)</span>
+                    </li>
+                    <li>
+                    	<span class="name">拉勾网</span>
+						<span class="unit">(9862)</span>
+                    </li>
                     <li class="more">
                     	<a href="javascript:;">
                         	<span class="text">更多</span>
@@ -51,8 +49,8 @@
                         </a>
                     </li>
                 </ul>
-                
-                            
+
+
                 <div class="sideBarShowHide">
                 	<a href="javascript:;" class="icon"></a>
                 </div>
@@ -86,7 +84,7 @@
                             </span>
                             <span class="info">
                                 <label>发布时间：</label>
-                                <span class="value">{{ hit.create_time }}</span>
+                                <span class="value">{{ hit.create_date }}</span>
                             </span>
                         </div>
                     </div>
@@ -95,9 +93,9 @@
                 <!-- 分页 -->
                 <div class="pagination ue-clear"></div>
                 <!-- 相关搜索 -->
-                
-                
-                
+
+
+
             </div>
             <div class="historyArea">
             	<div class="hotSearch">
@@ -127,16 +125,14 @@
 <script type="text/javascript">
     var search_url = "{% url "search" %}"
 	var key_words = "{{ key_words }}"
-
 	$('.searchList').on('click', '.searchItem', function(){
 		$('.searchList .searchItem').removeClass('current');
-		$(this).addClass('current');	
-	});
-	
-	$.each($('.subfieldContext'), function(i, item){
-		$(this).find('li:gt(2)').hide().end().find('li:last').show();		
+		$(this).addClass('current');
 	});
 
+	$.each($('.subfieldContext'), function(i, item){
+		$(this).find('li:gt(2)').hide().end().find('li:last').show();
+	});
 	function removeByValue(arr, val) {
       for(var i=0; i<arr.length; i++) {
         if(arr[i] == val) {
@@ -148,31 +144,30 @@
 	$('.subfieldContext .more').click(function(e){
 		var $more = $(this).parent('.subfieldContext').find('.more');
 		if($more.hasClass('show')){
-			
+
 			if($(this).hasClass('define')){
 				$(this).parent('.subfieldContext').find('.more').removeClass('show').find('.text').text('自定义');
 			}else{
-				$(this).parent('.subfieldContext').find('.more').removeClass('show').find('.text').text('更多');	
+				$(this).parent('.subfieldContext').find('.more').removeClass('show').find('.text').text('更多');
 			}
 			$(this).parent('.subfieldContext').find('li:gt(2)').hide().end().find('li:last').show();
 	    }else{
 			$(this).parent('.subfieldContext').find('.more').addClass('show').find('.text').text('收起');
-			$(this).parent('.subfieldContext').find('li:gt(2)').show();	
+			$(this).parent('.subfieldContext').find('li:gt(2)').show();
 		}
-		
+
 	});
-	
+
 	$('.sideBarShowHide a').click(function(e) {
 		if($('#main').hasClass('sideBarHide')){
 			$('#main').removeClass('sideBarHide');
 			$('#container').removeClass('sideBarHide');
 		}else{
-			$('#main').addClass('sideBarHide');	
+			$('#main').addClass('sideBarHide');
 			$('#container').addClass('sideBarHide');
 		}
-        
-    });
 
+    });
 	//分页
 	$(".pagination").pagination({{ total_nums }}, {
 		current_page : {{ page | add:'-1' }}, // 当前页码
@@ -184,16 +179,16 @@
 	    console.log(key_words)
 		window.location.href=search_url+'?q='+key_words+'&p='+(page_id+1)
 	}
-	
+
 	setHeight();
 	$(window).resize(function(){
-		setHeight();	
+		setHeight();
 	});
-	
+
 	function setHeight(){
 		if($('#container').outerHeight() < $(window).height()){
 			$('#container').height($(window).height()-33);
-		}	
+		}
 	}
 </script>
 <script type="text/javascript">
@@ -201,19 +196,16 @@
         $('.searchList .searchItem').removeClass('current');
         $(this).addClass('current');
     });
-
     // 联想下拉显示隐藏
     $('.searchInput').on('focus', function(){
         $('.dataList').show()
     });
-
     // 联想下拉点击
     $('.dataList').on('click', 'li', function(){
         var text = $(this).text();
         $('.searchInput').val(text);
         $('.dataList').hide()
     });
-
     hideElement($('.dataList'), $('.searchInput'));
 </script>
 <script>
@@ -228,7 +220,6 @@
     }
     //把存储的数据显示出来作为搜索历史
     MapSearchArr();
-
     function add_search(){
         var val = $(".searchInput").val();
         if (val.length>=2){
@@ -239,11 +230,8 @@
             //然后再把搜索内容显示出来
             MapSearchArr();
         }
-
         window.location.href=search_url+'?q='+val+"&s_type="+$(".searchItem.current").attr('data-type')
-
     }
-
     function MapSearchArr(){
         var tmpHtml = "";
         var arrLen = 0
