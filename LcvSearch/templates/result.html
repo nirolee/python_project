@@ -12,7 +12,8 @@
 <body>
 <div id="container">
 	<div id="hd" class="ue-clear">
-    	<a href="/"><div class="logo"></div></a>
+{#    	<<a></a> href="/"><div class="logo"></div></a>#}
+        <div style="width: 200px; height:10px; float: left"> </div>
         <div class="inputArea">
         	<input type="text" class="searchInput" value="{{ key_words }}"/>
             <input type="button" class="searchButton" onclick="add_search()"/>
@@ -35,14 +36,14 @@
                     	<span class="name">伯乐在线</span>
 						<span class="unit">({{ jobbole_count }})</span>
                     </li>
-                    <li>
-                    	<span class="name">知乎</span>
-						<span class="unit">(9862)</span>
-                    </li>
-                    <li>
-                    	<span class="name">拉勾网</span>
-						<span class="unit">(9862)</span>
-                    </li>
+{#                    <li>#}
+{#                    	<span class="name">知乎</span>#}
+{#						<span class="unit">(9862)</span>#}
+{#                    </li>#}
+{#                    <li>#}
+{#                    	<span class="name">拉勾网</span>#}
+{#						<span class="unit">(9862)</span>#}
+{#                    </li>#}
                     <li class="more">
                     	<a href="javascript:;">
                         	<span class="text">更多</span>
@@ -85,7 +86,7 @@
                             </span>
                             <span class="info">
                                 <label>发布时间：</label>
-                                <span class="value">{{ hit.create_date }}</span>
+                                <span class="value">{{ hit.create_time }}</span>
                             </span>
                         </div>
                     </div>
